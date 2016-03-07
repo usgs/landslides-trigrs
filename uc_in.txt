@@ -1,0 +1,21 @@
+Project title (up to 255 characters)
+tutorial--convert cohesion grid in psf to kPa
+number of rows, number of columns
+10,10
+name of input file (text string, up to 255 characters)
+data/tutorial/depthwt.asc
+name of result (output) file (text string, up to 255 characters)
+data/tutorial/dep_ft.asc
+conversion factor (a floating point number, see examples listed below)
+3.28084
+
+*****************************************************
+
+to convert psf to kPa, multiply by
+.0478698
+to convert psf to Pa, multiply by
+47.8698
+to convert feet to meters, multipy by
+0.3048
+to convert meters to feet, multiply by
+3.28084
