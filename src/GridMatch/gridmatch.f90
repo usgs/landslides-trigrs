@@ -25,7 +25,7 @@
 	character (len=8):: sdate
 	character (len=6):: vrsn
      	call date_and_time(sdate,stime)
-	vrsn='1.0.05'; bldate='14 Apr 2015'
+	vrsn='1.0.05'; bldate='24 Mar 2016'
 	u=(/11,12,13,14,15,16/)
  	tb=char(9)
 !  Open log file
@@ -46,9 +46,6 @@
 	write (*,*) '             By Rex L. Baum'
 	write (*,*) '        U.S. Geological Survey'
 	write (*,*) '-----------------------------------------'
-	write (*,*) 'Portions of this program include material'
-	write (*,*) '           copyrighted (C) by'
-	write (*,*) '      Absoft Corporation 1988-2012.'
 	write (*,*) ''
 !  Open initialization file
 	init='gm_in.txt' ; init=adjustl(init)

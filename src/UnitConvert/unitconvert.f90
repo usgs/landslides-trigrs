@@ -26,7 +26,7 @@
 	data u0,u1,u2,u3/10,11,12,13/
  	tb=char(9)
      	call date_and_time(date,time)
-	vrsn='1.0.02'; bldate='27 May 2008'
+	vrsn='1.0.03'; bldate='24 Mar 2016'
 ! Display program information	
 	write (*,*) '   UnitConvert: A simple utility for'
 	write (*,*) '  converting ASCII grid data from one'
@@ -35,19 +35,16 @@
 	write (*,*) '             By Rex L. Baum'
 	write (*,*) '        U.S. Geological Survey'
 	write (*,*) '-----------------------------------------'
-	write (*,*) 'Portions of this program include material'
-	write (*,*) '           copyrighted (C) by'
-	write (*,*) '      Absoft Corporation 1988-2008.'
 	write (*,*) ''
 !  Open log file
-	outfil='UnitConvertLog.txt'
+	outfil='UnitConvertLog.txt'; outfil=adjustl(outfil)
 	open (u1,file=trim(outfil),status='unknown',err=20)
 	write (u1,*) ''
      	write (u1,*) 'Starting UnitConvert'
      	write (u1,*) 'Date ',date(5:6),'/',date(7:8),'/',date(1:4)
 	write (u1,*) 'Time ',time(1:2),':',time(3:4),':',time(5:6)
 !  Open initialization file
-	init='uc_in.txt' 
+	init='uc_in.txt' ; init=adjustl(init)
 	inquire (file=init,exist=ans)
 	if(ans)then
  	  open(u3,file=init,status='old',err=10)
@@ -55,31 +52,31 @@
 	  write (*,*) 'Cannot locate default initialization file'
 	  write (*,*) 'Type name of initialization file and'
 	  write (*,*) 'press RETURN to continue'
-	  read (*,'(a)') init
+	  read (*,'(a)') init; init=adjustl(init)
 	  open (u3,file=trim(init),status='old',err=10)
 	end if
 !  Read initialization file and echo in log file
-	write (u1,*) 'Initialization file -->', init
+	write (u1,*) 'Initialization file -->', trim(init)
 	write (u1,*) '-- LISTING OF INITIALIZATION FILE --'	
-	read (u3,'(a)',err=15) heading
-	read (u3,'(a)',err=15) title
-  	write (u1,*) heading
-  	write (u1,*) title
-	read (u3,'(a)',err=15) heading
+	read (u3,'(a)',err=15) heading; heading=adjustl(heading)
+	read (u3,'(a)',err=15) title; title=adjustl(title)
+  	write (u1,*) trim(heading)
+  	write (u1,*) trim(title)
+	read (u3,'(a)',err=15) heading; heading=adjustl(heading)
 	read (u3,*,err=15) row, col
-  	write (u1,*) heading
+  	write (u1,*) trim(heading)
   	write (u1,*) row, col
-	read (u3,'(a)',err=15) heading
-	read (u3,'(a)',err=15) infil
-  	write (u1,*) heading
-  	write (u1,*) infil
-	read (u3,'(a)',err=15) heading
-	read (u3,'(a)',err=15) outfil
-  	write (u1,*) heading
-  	write (u1,*) outfil
-	read (u3,'(a)',err=15) heading
+	read (u3,'(a)',err=15) heading; heading=adjustl(heading)
+	read (u3,'(a)',err=15) infil; infil=adjustl(infil)
+  	write (u1,*) trim(heading)
+  	write (u1,*) trim(infil)
+	read (u3,'(a)',err=15) heading; heading=adjustl(heading)
+	read (u3,'(a)',err=15) outfil; outfil=adjustl(outfil)
+  	write (u1,*) trim(heading)
+  	write (u1,*) trim(outfil)
+	read (u3,'(a)',err=15) heading; heading=adjustl(heading)
 	read (u3,*,err=15) fac
-  	write (u1,*) heading
+  	write (u1,*) trim(heading)
   	write (u1,*) fac
   	write (u1,*) '-- END INITIALIZATION DATA --'
   	write (u1,*) ''
@@ -109,28 +106,28 @@
 ! Error handling if unable to open or read files	
    10	continue
 	write (*,*) '*** Error opening initialization file ***'
-	write (*,*) '--> ',init
+	write (*,*) '--> ',trim(init)
 	write (*,*) 'Check file name and location'
   	write (u1,*) 'Error reading initialization file'
-	write (u1,*) '--> ',init
+	write (u1,*) '--> ',trim(init)
 	write (u1,*) 'Check file contents and organization'
 	pause 'Press RETURN to exit'
 	stop
    15	continue
   	write (*,*) 'Error reading initialization file'
-	write (*,*) '--> ',init
+	write (*,*) '--> ',trim(init)
 	write (*,*) 'Check file contents and organization'
   	write (u1,*) 'Error reading initialization file'
-	write (u1,*) '--> ',init
+	write (u1,*) '--> ',trim(init)
 	write (u1,*) 'Check file contents and organization'
 	pause 'Press RETURN to exit'
 	stop
    20	continue
   	write (*,*) 'Error opening output file'
-	write (*,*) '--> ',outfil
+	write (*,*) '--> ',trim(outfil)
 	write (*,*) 'Check file path and status'
   	write (u1,*) 'Error opening output file'
-	write (u1,*) '--> ',outfil
+	write (u1,*) '--> ',trim(outfil)
 	write (u1,*) 'Check file path and status'
 	pause 'Press RETURN to exit'
 	stop

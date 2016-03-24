@@ -62,9 +62,6 @@ program trigrs_mpi
      write (*,*) '  By Rex L. Baum and William Z. Savage'
      write (*,*) '       U.S. Geological Survey'
      write (*,*) '-----------------------------------------'
-     write (*,*) 'Portions of this program include material'
-     write (*,*) '           copyrighted (C) by'
-     write (*,*) '      Absoft Corporation 1988-2010.'
      write (*,*) ''
   endif
   tb=char(9)
