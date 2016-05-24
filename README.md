@@ -33,7 +33,7 @@ Throughout its development, the code has passed through various kinds of testing
 References cited
 ----------------
 
-*   Alvioli Massimiliano, and Baum, R.L., (in review) Parallelization of the TRIGRS model for rainfall-induced landslides using the message passing interface: Environmental Modeling & Software. 
+*   Alvioli Massimiliano, and Baum, R.L., 2016, Parallelization of the TRIGRS model for rainfall-induced landslides using the message passing interface: Environmental Modeling & Software, v. 81, p. 122 - 135, doi: 10.1016/j.envsoft.2016.04.002. 
 
 *   Baum, R.L., Savage, W.Z., and Godt, J.W., 2002, TRIGRS--A FORTRAN Program for Transient Rainfall Infiltration and Grid-Based Regional Slope-Stability Analysis: U.S. Geological Survey Open-File Report 02-0424, 35 p., 2 appendices.
 
