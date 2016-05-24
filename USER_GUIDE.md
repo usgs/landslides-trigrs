@@ -145,13 +145,8 @@ Grid of depths to the deepest computed water table for user-selected output time
 TRwater\_eleva\_XXXXXXXX\_#.asc
 Grid of elevations to the deepest computed water table for user-selected output times. File name extension may be either “.txt” or “.asc”
 
-Formula Corrections
--------------------
-
-We note the following corrections to formulas appearing in our earlier publications: Replace the term “” in equations 5c, 5d, 8, 12a and 12b of Baum and others (2010) and corresponding formulas in Baum and others (2008) with “”, where KS is the saturated hydraulic conductivity, 1 is the inverse of the height of the capillary fringe adjusted for slope, and 0 is the initial suction head.  The exponential term drops out because we modified the exponential model for soil water retention from the form originally used by Srivastava and Yeh (1991) (see Savage and others, 2004; Baum and others 2010).  A negative sign should appear on the right side of equation 10a of Baum and others (2008; 2010) so that , where qZmax is the maximum basal flux and  is the vertical component of the long-term pressure-head gradient, /Z, at the basal boundary.  
-
-Formula additions
------------------
+Formula corrections and additions
+---------------------------------
 
 We added formulas to handle cases that resulted in computational errors in the original code and to improve computational efficiency.  Although the basic formulas were coded correctly in previous releases of TRIGRS (Baum and others, 2002; 2008), typographical errors did creep into the reports documenting them (Baum and others, 2008, 2010).  See Baum and Godt (2013) for corrected formulas.  New formulas added to improve the code are documented in Alvioli and Baum (2016).  Here we briefly describe the changes.  
 
@@ -221,7 +216,7 @@ A modern FORTRAN compiler, MPI libraries (tested with gfortran/f95 and MPICH/Ope
 
 `/my/dir/trigrs_mpi/tpx`
 
- + Run TRIGRS from the directory containing your initialization file tr_in.txt the serial execution can be started both as:
+ + Run TRIGRS from the directory containing your initialization file `tr_in.txt` the serial execution can be started both as:
 
 `/my/dir/trigrs_mpi/trg`
 
@@ -245,12 +240,12 @@ where NP1+NP2+NP3=NP, otherhost1 and otherhost2 are accessible through ssh with 
 
 `mpirun -np [NP] -machinefile mf.txt /my/dir/trigrs_mpi/prg`
 
- + TUTORIAL - you can run `tpx` and `trg` or `prg` in the source code folder `trigrs_mpi/`. The sample initialization files (`tpx\_in.txt` for `Topoindex` and `tr\_in.txt`) will be used, input data will be read from the existing folder `trigrs_mpi/data/tutorial` and output data will be stored in `trigrs_mpi/data/output/`. Modify the initialization files to suit your input data and needs.
+ + TUTORIAL - you can run `tpx` and `trg` or `prg` in the source code folder `trigrs_mpi/`. The sample initialization files (`tpx_in.txt` for `Topoindex` and `tr_in.txt`) will be used, input data will be read from the existing folder `trigrs_mpi/data/tutorial` and output data will be stored in `trigrs_mpi/data/output/`. Modify the initialization files to suit your input data and needs.
 
 Acknowledgements
 ----------------
 
-Mark Reid and Dianne Brien (both USGS) provided helpful advice and information with regard to implementation of code to export ijz and xmdv data.  Salvatore Raia (formerly of CNR IRPI, Perugia, Italy) and Soni Yatheendradas (NASA) identified several minor issues with earlier versions of the program and made suggestions for improving the code that have been addressed in this revision.  Mateo Berti identified the errors in the formulas presented in Baum and others (2008; 2010).  Collaboration with Massimiliano Alvioli (CNR, IRPI, Perugia, Italy) resulted in minor code restructuring to separate processing from output of the list files to facilitate implementation of parallel processing using the Message Passing Interface (MPI).
+Mark Reid and Dianne Brien (both USGS) provided helpful advice and information with regard to implementation of code to export ijz and xmdv data.  Salvatore Raia (formerly of CNR IRPI, Perugia, Italy) and Soni Yatheendradas (NASA) identified several minor issues with earlier versions of the program and made suggestions for improving the code that have been addressed in this revision.  Mateo Berti identified the errors in the formulas presented in Baum and others (2008; 2010).  
 
 References cited
 ----------------
