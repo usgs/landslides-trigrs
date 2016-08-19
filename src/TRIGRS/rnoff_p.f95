@@ -80,7 +80,7 @@ subroutine rnoff_p(grd,sumex,imx1,celsiz,param,parami,nodat,nodata,mnd,sctr,ncol
      if(myrank.eq.0) then
         open (u(18),file=infil,status='old',err=400)
         do i=1,imax
-           if(myrank.eq.0) read (u(18),*,end=430) j,indx(j)
+           read (u(18),*,end=430) j,indx(j)
         end do
         close (u(18))
      endif
@@ -111,8 +111,8 @@ subroutine rnoff_p(grd,sumex,imx1,celsiz,param,parami,nodat,nodata,mnd,sctr,ncol
            if(myrank.eq.0) then
               write(u(19),*) 'Precipitation intensity grid ',j
               write(u(19),*) trim(rifil(j)),sctr,' data cells'
+              if(sctr/=imx1) write (u(19),*) 'Grid mismatch ',trim(rifil(j))
            endif
-           if(sctr/=imx1) write (u(19),*) 'Grid mismatch ',trim(rifil(j))
         else
            do i=1,imx1
               ri(i)=cri(j)
@@ -141,8 +141,10 @@ subroutine rnoff_p(grd,sumex,imx1,celsiz,param,parami,nodat,nodata,mnd,sctr,ncol
                  if (dsc(l).eq.id) then
                     ro(dsc(l))=ro(dsc(l))+rnof*(wf(l)-1.)   
                  else
-                    if (dsc(l)<1) write (*,*) dsc(l)
-                    if (dsc(l)>imx1) write (*,*) dsc(l)
+                    if(myrank.eq.0) then
+                       if (dsc(l)<1) write (*,*) dsc(l)
+                       if (dsc(l)>imx1) write (*,*) dsc(l)
+                    end if
                     ro(dsc(l))=ro(dsc(l))+rnof*wf(l)
                  end if
               end do
@@ -156,8 +158,10 @@ subroutine rnoff_p(grd,sumex,imx1,celsiz,param,parami,nodat,nodata,mnd,sctr,ncol
                  if (dsc(l).eq.id) then
                     ro(dsc(l))=ro(dsc(l))+rnof*(wf(l)-1.)   
                  else
-                    if (dsc(l)<1) write (*,*) dsc(l)
-                    if (dsc(l)>imx1) write (*,*) dsc(l)
+                    if(myrank.eq.0) then
+                       if (dsc(l)<1) write (*,*) dsc(l)
+                       if (dsc(l)>imx1) write (*,*) dsc(l)
+                    end if
                     ro(dsc(l))=ro(dsc(l))+rnof*wf(l)
                  end if
               end do

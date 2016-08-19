@@ -76,7 +76,7 @@ subroutine ssizgrd_p(row,col,celsiz,nodat,ctr,u,infil,header,ulog)
         end if
      end do col_loop
   end do row_loop
-125 close(u)
+125 if(myrank.eq.0) close(u)
   if(myrank.eq.0) then
      write(*,*) ctr,' = number of data cells'
      write(*,*) ctall,' = total number of cells'

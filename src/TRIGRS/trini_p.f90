@@ -101,6 +101,7 @@ subroutine trini_p(ulog,uini,dg2rad)
            write(*,*) 'Edit tr_in.txt and restart program TRIGRS'
            write(ulog,*) 'Error, negative property value in line ',linct
            write(ulog,*) 'Edit tr_in.txt and restart program TRIGRS'
+           call MPI_FINALIZE(ierr)
            stop 'Negative property in trini()'
         end if
         if(ths(iz)>0.95) then ! set default value for saturated water content, Added 22 Aug 2013, RLB  
@@ -337,7 +338,6 @@ subroutine trini_p(ulog,uini,dg2rad)
   Call MPI_BCAST(folder,224,MPI_CHARACTER,0,MPI_COMM_WORLD,ierr)  
   Call MPI_BCAST(suffix,8,MPI_CHARACTER,0,MPI_COMM_WORLD,ierr)  
   Call MPI_BCAST(rodoc,1,MPI_LOGICAL,0,MPI_COMM_WORLD,ierr)  
-  Call MPI_BCAST(outp,8,MPI_LOGICAL,0,MPI_COMM_WORLD,ierr)  
   Call MPI_BCAST(el_or_dep,5,MPI_CHARACTER,0,MPI_COMM_WORLD,ierr)  
   Call MPI_BCAST(flag,1,MPI_INTEGER,0,MPI_COMM_WORLD,ierr)
   Call MPI_BCAST(spcg,1,MPI_INTEGER,0,MPI_COMM_WORLD,ierr)
@@ -437,6 +437,7 @@ subroutine trini_p(ulog,uini,dg2rad)
   Call MPI_BCAST(lany,1,MPI_LOGICAL,0,MPI_COMM_WORLD,ierr)  
   Call MPI_BCAST(llus,1,MPI_LOGICAL,0,MPI_COMM_WORLD,ierr)
   Call MPI_BCAST(lps0,1,MPI_LOGICAL,0,MPI_COMM_WORLD,ierr)
+  Call MPI_BCAST(outp,8,MPI_LOGICAL,0,MPI_COMM_WORLD,ierr)  
   Call MPI_BCAST(flowdir,5,MPI_CHARACTER,0,MPI_COMM_WORLD,ierr)
   Call MPI_BCAST(bkgrof,1,MPI_LOGICAL,0,MPI_COMM_WORLD,ierr)
   Call MPI_BCAST(lasc,1,MPI_LOGICAL,0,MPI_COMM_WORLD,ierr)
@@ -496,8 +497,7 @@ subroutine trini_p(ulog,uini,dg2rad)
   write (ulog,*) '*** Error opening intialization file in subroutine trini ***'
   write (ulog,*) '--> ',trim(init)
   write (ulog,*) 'Check file location and name'
-  write(*,*) 'Press RETURN to exit'
-  read*
+  call MPI_FINALIZE(ierr)
   stop '201 in trini()'
 420 continue
   write (*,*) 'Error reading initialization file in subroutine trini'

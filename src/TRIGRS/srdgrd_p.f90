@@ -100,6 +100,8 @@ subroutine srdgrd_p(grd,pth,ncol,nrow,celsiz,nodat,pf,pf1,ctr,imax,temp,u,infil,
                  close(u)
                  close(u1)
               endif
+              call MPI_FINALIZE(ierr)
+              stop 'Error at line 90 in subroutine srdgrd_p'
            end if
            pf(ctr)=temp(i)
         end if
@@ -126,9 +128,8 @@ subroutine srdgrd_p(grd,pth,ncol,nrow,celsiz,nodat,pf,pf1,ctr,imax,temp,u,infil,
   write(*,*)'--> ',trim(infil), lncnt
   write (u1,*) 'Error reading grid file, line '
   write(u1,*)'--> ',trim(infil), lncnt
-  write(*,*) 'Press RETURN to exit'
-  read*
   close(u)
   close(u1)
-  stop '-130 in subroutine irdgrd'
+  call MPI_FINALIZE(ierr)
+  stop '-130 in subroutine srdgrd_p'
 end subroutine srdgrd_p

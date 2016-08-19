@@ -23,7 +23,7 @@ subroutine irdgrd_p(grd,pth,ncol,nrow,celsiz,inodat,mnd,y,y1,ctr,imax,itemp,u,in
      open(u,file=trim(infil),status='old',err=10)
      do m=1,6
         lncnt=m
-        if(myrank.eq.0) read(u,*,err=130) header(m),param(m)
+        read(u,*,err=130) header(m),param(m)
         header(m)=adjustl(header(m))
      enddo
   endif
@@ -137,10 +137,9 @@ subroutine irdgrd_p(grd,pth,ncol,nrow,celsiz,inodat,mnd,y,y1,ctr,imax,itemp,u,in
   write(*,*)'--> ',trim(infil), lncnt
   write (u1,*) 'Error reading grid file, line '
   write(u1,*)'--> ',trim(infil), lncnt
-  write(*,*) 'Press RETURN to exit'
-  read*
   close(u)
   close(u1)
+  call MPI_FINALIZE(ierr)
   stop '-130 in subroutine irdgrd'
 end subroutine irdgrd_p
 

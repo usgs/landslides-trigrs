@@ -51,7 +51,7 @@ subroutine satinf_p(imx1,ulog,u1,nccs)
            q(j)=0.
         else
            q(j)=ks(zo(i))*rik(i+(j-1)*imax)
-           if(q(j)>ks(zo(i))) write (ulog,*) '*q>Ks!', i,j,q(j),ks(zo(i))
+           if(q(j)>ks(zo(i)) .and. myrank.eq.0) write (ulog,*) '*q>Ks!', i,j,q(j),ks(zo(i))
         end if
      end do
      !  use surface flux in infiltration computations
@@ -75,7 +75,7 @@ subroutine satinf_p(imx1,ulog,u1,nccs)
 999  continue
   end do grid_loop
   if(myrank.eq.0) then
-     if(myrank.eq.0) write(*,*)
+     write(*,*)
      write (*,*) imx1, ' cells completed' 
      write (ulog,*) imx1, ' cells completed' 
   endif
