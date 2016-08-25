@@ -48,7 +48,7 @@ program trigrs_mpi
   pid=(/'TI','GM','TR'/)
   pi=3.141592653589793
   dg2rad=pi/180.D0
-  vrsn='2.0.10t'; bldate='12 Jan 2016'
+  vrsn='2.1.00a'; bldate='25 Aug 2016'
   smt=0.1d0; lard=12.d0 ! test values for early-time (moved 2/15/2012, smt corrected 3/5/2015, RLB)
   mnd=6 !default value assumed if no integer grid is read.
   fminfil=adjustl(fminfil);zfminfil=adjustl(zfminfil)
@@ -61,6 +61,8 @@ program trigrs_mpi
      write (*,*) '       Version ', vrsn,', ',bldate
      write (*,*) '  By Rex L. Baum and William Z. Savage'
      write (*,*) '       U.S. Geological Survey'
+     write (*,*) '  ***    MPI modifications by    ***'
+     write (*,*) '     Massimilliano Alvioli, CNR IRPI'
      write (*,*) '-----------------------------------------'
      write (*,*) ''
   endif
