@@ -78,50 +78,50 @@
 	end if
 	write(u(9),*) ''
 	write(u(9),*) '-- LISTING OF INITIALIZATION DATA --'
-	read(u(1),'(a)',err=30) heading; heading=adjustl(heading)
-	read(u(1),'(a)',err=30) title; title=adjustl(title)
+	read(u(1),'(a)',err=30,end=35) heading; heading=adjustl(heading)
+	read(u(1),'(a)',err=30,end=35) title; title=adjustl(title)
 	write(u(9),*) trim(heading)
 	write(u(9),*) trim(title)
-	read(u(1),'(a)',err=30) heading; heading=adjustl(heading)
-	read(u(1),*,err=30) aif
+	read(u(1),'(a)',err=30,end=35) heading; heading=adjustl(heading)
+	read(u(1),*,err=30,end=35) aif
 !	read(u(1),*,err=30) row,col,aif
 	write(u(9),*) trim(heading)
 	write(u(9),*) aif
 !	write(u(9),*) row,col,aif
-	read(u(1),'(a)',err=30) heading; heading=adjustl(heading)
-	read(u(1),*,err=30) pwr,itmax
+	read(u(1),'(a)',err=30,end=35) heading; heading=adjustl(heading)
+	read(u(1),*,err=30,end=35) pwr,itmax
 	write(u(9),*) trim(heading)
 	write(u(9),*) pwr,itmax
-	read(u(1),'(a)',err=30) heading; heading=adjustl(heading)
-	read(u(1),'(a)',err=30) demfil; demfil=adjustl(demfil)
+	read(u(1),'(a)',err=30,end=35) heading; heading=adjustl(heading)
+	read(u(1),'(a)',err=30,end=35) demfil; demfil=adjustl(demfil)
 	write(u(9),*) trim(heading)
 	write(u(9),*) trim(demfil)
-	read(u(1),'(a)',err=30) heading; heading=adjustl(heading)
-	read(u(1),'(a)',err=30) dirfil; dirfil=adjustl(dirfil)
+	read(u(1),'(a)',err=30,end=35) heading; heading=adjustl(heading)
+	read(u(1),'(a)',err=30,end=35) dirfil; dirfil=adjustl(dirfil)
 	write(u(9),*) trim(heading)
 	write(u(9),*) trim(dirfil)
-	read(u(1),'(a)',err=30) heading; heading=adjustl(heading)
-	read(u(1),*,err=30) op(1)
+	read(u(1),'(a)',err=30,end=35) heading; heading=adjustl(heading)
+	read(u(1),*,err=30,end=35) op(1)
 	write(u(9),*) trim(heading)
 	write(u(9),*) op(1)
-	read(u(1),'(a)',err=30) heading; heading=adjustl(heading)
-	read(u(1),*,err=30) op(2)
+	read(u(1),'(a)',err=30,end=35) heading; heading=adjustl(heading)
+	read(u(1),*,err=30,end=35) op(2)
 	write(u(9),*) trim(heading)
 	write(u(9),*) op(2)
-	read(u(1),'(a)',err=30) heading; heading=adjustl(heading)
-	read(u(1),*,err=30) op(3)
+	read(u(1),'(a)',err=30,end=35) heading; heading=adjustl(heading)
+	read(u(1),*,err=30,end=35) op(3)
 	write(u(9),*) trim(heading)
 	write(u(9),*) op(3)
-	read(u(1),'(a)',err=30) heading; heading=adjustl(heading)
-	read(u(1),*,err=30) op(4)
+	read(u(1),'(a)',err=30,end=35) heading; heading=adjustl(heading)
+	read(u(1),*,err=30,end=35) op(4)
 	write(u(9),*) trim(heading)
 	write(u(9),*) op(4)
-	read(u(1),'(a)',err=30) heading; heading=adjustl(heading)
-	read(u(1),*,err=30) op(5)
+	read(u(1),'(a)',err=30,end=35) heading; heading=adjustl(heading)
+	read(u(1),*,err=30,end=35) op(5)
 	write(u(9),*) trim(heading)
 	write(u(9),*) op(5)
-	read(u(1),'(a)',err=30) heading; heading=adjustl(heading)
-	read(u(1),*,err=30) op(6),lspars
+	read(u(1),'(a)',err=30,end=35) heading; heading=adjustl(heading)
+	read(u(1),*,err=30,end=35) op(6),lspars
 	write(u(9),*) trim(heading)
 	write(u(9),*) op(6),lspars
 !	read(u(1),'(a)',err=30) heading
@@ -132,7 +132,7 @@
         folder=demfil(1:patlen) ; folder=adjustl(folder) ! path to elevation grid
 	write(u(9),*) 'Path to elevation grid and output files'
 	write(u(9),*) trim(folder)
-	read(u(1),'(a)',err=30) heading; heading=adjustl(heading)
+	read(u(1),'(a)',err=30,end=35) heading; heading=adjustl(heading)
 	read(u(1),'(a)',err=30) suffix; suffix=adjustl(suffix)
 	write(u(9),*) trim(heading)
 	write(u(9),*) trim(suffix)
@@ -399,6 +399,13 @@
 	write (*,*) '*** Error reading file ***'
 	write (*,*) '--> ',trim(init)
 	write (*,*) 'Check file format and data'
+                write(*,*) 'Press RETURN to exit'
+                read*
+	stop
+   35	continue
+	write (*,*) '*** Premature end of file ***'
+	write (*,*) '--> ',trim(init)
+	write (*,*) 'Check file format and content'
                 write(*,*) 'Press RETURN to exit'
                 read*
 	stop

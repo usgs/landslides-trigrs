@@ -20,7 +20,7 @@ subroutine rnoff_p(grd,sumex,imx1,celsiz,param,parami,nodat,nodata,mnd,sctr,ncol
   real:: rnof,inflx,test1
   real (double):: nodat,sumin,sumro,sumrf,sumex
   real (double):: celsiz,param(6),parami(6),ti
-  integer myrank,isize,ierr
+  integer myrank,isize,ierr, errcode
   Call MPI_COMM_RANK(MPI_COMM_WORLD, myrank, ierr)
   Call MPI_COMM_SIZE(MPI_COMM_WORLD, isize, ierr)
   ! verify that the runoff routing input files are named in the initialization file	
@@ -285,22 +285,24 @@ subroutine rnoff_p(grd,sumex,imx1,celsiz,param,parami,nodat,nodata,mnd,sctr,ncol
   if(myrank.eq.0) then
      write (*,*) '*** Error opening file in subroutine rnoff ***'
      write (*,*) '--> ',infil
-     write (*,*) 'Check file name and location'
+     write (*,*) '400, Check file name and location'
      write (u(19),*) '*** Error opening file in subroutine rnoff ***'
      write (u(19),*) '--> ',infil
-     write (u(19),*) 'Check file name and location'
+     write (u(19),*) '400, Check file name and location'
   endif
-  call MPI_FINALIZE(ierr)
+  call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!  call MPI_FINALIZE(ierr)
   stop '400'
 430 continue
   if(myrank.eq.0) then  
      write (*,*) 'Attempt to read past end of file in subroutine rnoff'
      write (*,*) '--> ',infil
-     write (*,*) 'Check file contents and value of Imax'
+     write (*,*) '430, Check file contents and value of Imax'
      write (u(19),*) 'Attempt to read past end of file in subroutine rnoff'
      write (u(19),*) '--> ',infil
-     write (u(19),*) 'Check file contents and value of Imax'
+     write (u(19),*) '430, Check file contents and value of Imax'
   endif
-  call MPI_FINALIZE(ierr)
+  call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!  call MPI_FINALIZE(ierr)
   stop '430'
 end subroutine rnoff_p

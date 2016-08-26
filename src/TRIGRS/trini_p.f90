@@ -12,7 +12,7 @@ subroutine trini_p(ulog,uini,dg2rad)
   real :: tstar,tdif
   logical :: ltdif
   character (len=31):: scratch
-  integer myrank,isize,ierr
+  integer myrank,isize,ierr,errcode
   Call MPI_COMM_RANK(MPI_COMM_WORLD, myrank, ierr)
   Call MPI_COMM_SIZE(MPI_COMM_WORLD, isize, ierr)
   init='tr_in.txt'
@@ -493,68 +493,74 @@ subroutine trini_p(ulog,uini,dg2rad)
 201 continue
   write (*,*) '*** Error opening intialization file in subroutine trini ***'
   write (*,*) '--> ',trim(init)
-  write (*,*) 'Check file location and name'
+  write (*,*) '201, Check file location and name'
   write (ulog,*) '*** Error opening intialization file in subroutine trini ***'
   write (ulog,*) '--> ',trim(init)
-  write (ulog,*) 'Check file location and name'
-  call MPI_FINALIZE(ierr)
+  write (ulog,*) '201, Check file location and name'
+  call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!  call MPI_FINALIZE(ierr)
   stop '201 in trini()'
 420 continue
   write (*,*) 'Error reading initialization file in subroutine trini'
   write (*,*) '--> ',trim(init), ' at line ',linct
-  write (*,*) 'Check file contents and organization'
+  write (*,*) '420, Check file contents and organization'
   write (ulog,*) 'Error reading initialization file in subroutine trini'
   write (ulog,*) '--> ',trim(init), ' at line ',linct
-  write (ulog,*) 'Check file contents and organization'
-  call MPI_FINALIZE(ierr)
+  write (ulog,*) '420, Check file contents and organization'
+  call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!  call MPI_FINALIZE(ierr)
   stop '420 in trini()'
 421 continue
   write (*,*) 'Error reading initialization file in subroutine trini'
   write (*,*) '--> ',trim(init), ' at line ',linct
-  write (*,*) 'Check file contents and organization'
+  write (*,*) '421, Check file contents and organization'
   write (*,*) 'Number of file names/place holders for rainfall data'
   write (*,*) 'must equal nper.  List each on a separate line.'
   write (ulog,*) 'Error reading initialization file in subroutine trini'
   write (ulog,*) '--> ',trim(init), ' at line ',linct
-  write (ulog,*) 'Check file contents and organization'
+  write (ulog,*) '421, Check file contents and organization'
   write (ulog,*) 'Number of file names/place holders for rainfall data'
   write (ulog,*) 'must equal nper.  List each on a separate line.'
-  call MPI_FINALIZE(ierr)
+  call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!  call MPI_FINALIZE(ierr)
   stop '421 in trini()'
 422 continue
   write (*,*) 'Error reading initialization file in subroutine trini'
   write (*,*) '--> ',trim(init), ' at line ',linct
-  write (*,*) 'Check file contents and organization'
+  write (*,*) '422, Check file contents and organization'
   write (*,*) 'Be sure to specify water table elevation or depth'
   write (*,*) 'along with choice or whether or not to save to file.'
   write (ulog,*) 'Error reading initialization file in subroutine trini'
   write (ulog,*) '--> ',trim(init), ' at line ',linct
-  write (ulog,*) 'Check file contents and organization'
+  write (ulog,*) '422, Check file contents and organization'
   write (ulog,*) 'Be sure to specify water table elevation or depth'
   write (ulog,*) 'along with choice or whether or not to save to file.'
-  call MPI_FINALIZE(ierr)
+  call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!  call MPI_FINALIZE(ierr)
   stop '422 in trini()'
 423 continue
   write (*,*) 'Error reading initialization file in subroutine trini'
   write (*,*) '--> ',trim(init), ' at line ',linct
-  write (*,*) 'Check file contents and organization'
+  write (*,*) '423, Check file contents and organization'
   write (*,*) 'Be sure to specify vertical spacing increment for list file'
   write (*,*) 'on same line as output flag.'
   write (ulog,*) 'Error reading initialization file in subroutine trini'
   write (ulog,*) '--> ',trim(init), ' at line ',linct
-  write (ulog,*) 'Check file contents and organization'
+  write (ulog,*) '423, Check file contents and organization'
   write (ulog,*) 'Be sure to specify vertical spacing increment for list file'
   write (ulog,*) 'on same line as output flag.'
-  call MPI_FINALIZE(ierr)
+  call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!  call MPI_FINALIZE(ierr)
   stop '423 in trini()'
 424 continue ! Error message added 29 Jan 2013, RLB 
-  write (*,*) 'Subroutine trini reports time steps out of order in file'
+  write (*,*) '424, Subroutine trini reports time steps out of order in file'
   write (*,*) '--> ',trim(init), ' at line ',linct
   write (*,*) 'List time steps in increasing order'
-  write (ulog,*) 'Subroutine trini reports time steps out of order in file'
+  write (ulog,*) '424, Subroutine trini reports time steps out of order in file'
   write (ulog,*) '--> ',trim(init), ' at line ',linct
   write (ulog,*) 'List time steps in increasing order'
-  call MPI_FINALIZE(ierr)
+  call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!  call MPI_FINALIZE(ierr)
   stop '424 in trini()'
   !
 end subroutine trini_p

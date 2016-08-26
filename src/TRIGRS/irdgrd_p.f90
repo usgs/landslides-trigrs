@@ -14,7 +14,7 @@ subroutine irdgrd_p(grd,pth,ncol,nrow,celsiz,inodat,mnd,y,y1,ctr,imax,itemp,u,in
   double precision east,west,north,south
   character*14 header(6),h1
   character*255 infil
-  integer myrank,isize,ierr
+  integer myrank,isize,ierr, errcode
   Call MPI_COMM_RANK(MPI_COMM_WORLD, myrank, ierr)
   Call MPI_COMM_SIZE(MPI_COMM_WORLD, isize, ierr)
   !
@@ -101,15 +101,16 @@ subroutine irdgrd_p(grd,pth,ncol,nrow,celsiz,inodat,mnd,y,y1,ctr,imax,itemp,u,in
                  write (*,* )'Subroutine irdgrd reports'
                  write(*,*) 'Number of data cells exceeds array size'
                  write (*,*) '--> ',trim(infil)
-                 write(*,*) 'Check imax value in grid_size.txt file and no-data values in input grid.'	    	                 
+                 write(*,*) 'Check imax value in grid_size.txt file and no-data values in input grid.'
                  write (*,* )'Subroutine irdgrd reports'
                  write(u1,*) 'Number of data cells exceeds array size'
                  write (u1,*) '--> ',trim(infil)
-                 write(*,*) 'Check imax value in grid_size.txt file and no-data values in input grid.'	    	                 
+                 write(*,*) 'Check imax value in grid_size.txt file and no-data values in input grid.'
                  close(u)
                  close(u1)
               endif
-              call MPI_FINALIZE(ierr)
+              call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!             call MPI_FINALIZE(ierr)
               stop '-12 in subroutine irdgrd'
            end if
            y(ctr)=itemp(i)
@@ -123,23 +124,25 @@ subroutine irdgrd_p(grd,pth,ncol,nrow,celsiz,inodat,mnd,y,y1,ctr,imax,itemp,u,in
   if(myrank.eq.0) then
      write(*,*)'***Error opening input file in subroutine irdgrd***'
      write(*,*)'--> ',trim(infil)
-     write(*,*)'Check file name and location'
+     write(*,*)'10, Check file name and location'
      write(u1,*)'***Error opening input file in subroutine irdgrd***'
      write(u1,*)'--> ',trim(infil)
-     write(u1,*)'Check file name and location'
+     write(u1,*)'10, Check file name and location'
      close(u)
      close(u1)
   endif
-  call MPI_FINALIZE(ierr)
+  call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!  call MPI_FINALIZE(ierr)
   stop '-10 in subroutine irdgrd'
 130 continue
-  write (*,*) 'Error reading grid file, line '
+  write (*,*) '130, Error reading grid file, line '
   write(*,*)'--> ',trim(infil), lncnt
-  write (u1,*) 'Error reading grid file, line '
+  write (u1,*) '130, Error reading grid file, line '
   write(u1,*)'--> ',trim(infil), lncnt
   close(u)
   close(u1)
-  call MPI_FINALIZE(ierr)
+  call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!  call MPI_FINALIZE(ierr)
   stop '-130 in subroutine irdgrd'
 end subroutine irdgrd_p
 

@@ -19,6 +19,7 @@ zbot=elev(i)-zmax(i)
 ztop=elev(i)-zmin
 zwat0=elev(i)-depth(i) ! Initial water table depth
 zwat=zwat0 ! initialize array values to initial water table depth
+wtctr=0; wctr=0; wptr=0; wtptr=0
 ! Check for deepz <= 0 to skip deep node
 ldeep=.true.
 zdeep=elev(i)-deepz 
@@ -81,13 +82,13 @@ else if (dcf<=0.) then
 end if
 if(outp(1)) then
   if(wtctr==0)then
-    if(p(1)>0. .and. zmin>0.)then ! water table at ground surface and zmin is below surface.  Added 5/3/2013, RLB 
+    if(p(1)>0. .and. zmin>=0.)then ! water table at ground surface and zmin is at or below surface.  Added 5/3/2013, RLB 
       wtctr=wtctr+1;wctr=wctr+1
       wptr(wtctr)=1
       zwat(1)=elev(i);p(1)=0.
     else 
-      write(*,*) 'Error in svijz(): wtctr not initialized!'
-      write(*,*) 'wptr(wtctr), wtctr', wptr(wtctr), wtctr
+      write(*,*) 'Error in svxmdv()!: wtctr not initialized at cell', i
+      write(*,*) 'wptr(1), wtptr(1) ', wptr(1), wtptr(1)
     endif
   endif
   select case (el_or_dep) ! water table elevation or depth

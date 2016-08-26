@@ -114,8 +114,8 @@ c !  can be written out in grid format.
 	write(*,*)'--> ',trim(infil), lncnt
   	write (u1,*) 'Error reading grid file, line '
 	write(u1,*)'--> ',trim(infil), lncnt
-                write(*,*) 'Press RETURN to exit'
-                read*
+        write(*,*) 'Press RETURN to exit'
+        read*
 	close(u)
 	close(u1)
 	stop '-130 in subroutine srdgrd'

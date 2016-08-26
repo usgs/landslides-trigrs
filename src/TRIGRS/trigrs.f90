@@ -40,7 +40,7 @@ u=(/11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,&
 pid=(/'TI','GM','TR'/)
 pi=3.141592653589793
 dg2rad=pi/180.D0
-vrsn='2.1.00a'; bldate='25 Aug 2016'
+vrsn='2.1.00a'; bldate='26 Aug 2016'
 smt=0.1d0; lard=12.d0 ! test values for early-time (moved 2/15/2012, smt corrected 3/5/2015, RLB)
 mnd=6 !default value assumed if no integer grid is read.
 fminfil=adjustl(fminfil);zfminfil=adjustl(zfminfil)

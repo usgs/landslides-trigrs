@@ -1,5 +1,5 @@
 Name of project (up to 255 characters)
-TRIGRS, version 2.0.10h, Minor Creek landslide example (after Iverson, 2000)
+TRIGRS, version 2.1.00a, Minor Creek landslide example (after Iverson, 2000)
 tx, nmax, mmax, zones
 10,  10,  -20,    1
 nzs, zmin,  uww,   nper,  t 

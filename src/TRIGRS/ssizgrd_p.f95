@@ -16,7 +16,7 @@ subroutine ssizgrd_p(row,col,celsiz,nodat,ctr,u,infil,header,ulog)
   real, allocatable:: temp(:)
   character (len=14):: header(6)
   character (len=255):: infil
-  integer myrank,isize,ierr
+  integer myrank,isize,ierr,errcode
   Call MPI_COMM_RANK(MPI_COMM_WORLD, myrank, ierr)
   Call MPI_COMM_SIZE(MPI_COMM_WORLD, isize, ierr)
   !  	
@@ -86,14 +86,15 @@ subroutine ssizgrd_p(row,col,celsiz,nodat,ctr,u,infil,header,ulog)
   if(myrank.eq.0) then
      write (*,*) '*** Error opening input file in subroutine ssizgrd ***'
      write (*,*) '--> ',trim(infil)
-     write (*,*) 'Check file name and location'
+     write (*,*) '23, Check file name and location'
      write (ulog,*) '*** Error opening input file in subroutine ssizgrd ***'
      write (ulog,*) '--> ',trim(infil)
-     write (ulog,*) 'Check file name and location'
+     write (ulog,*) '23, Check file name and location'
      close(u)
      close(ulog)
   endif
-  call MPI_FINALIZE(ierr)
+  call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!  call MPI_FINALIZE(ierr)
   stop '- Error in ssizgrd()'
 end subroutine ssizgrd_p
 	
