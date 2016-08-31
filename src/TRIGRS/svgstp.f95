@@ -73,7 +73,7 @@ temporal_loop: do m=1,nts+1
         tfac1=tdif1*dif1/(dlz*dlz) ! moved to top level of temporal_loop_1 from line 74, 4 Jan 2016, RLB
         if(tdif1 > 0.0) then
 !  corrected diffusivity term in next line (divide by b1*b1)       
-                  t1=sqrt(tdif1*dif(zo(i))/(b1*b1))
+          t1=sqrt(tdif1*dif(zo(i))/(b1*b1))
           if (t1<1.0e-29) t1=1.0e-29
           term1=0.0
           if(tfac1>late_t) then  !Added later time solution to improve performance and eliminate nonconvergent cells, 2/18-23/2015, RLB
@@ -89,13 +89,13 @@ temporal_loop: do m=1,nts+1
 ! test for convergence of series to within 1/1e+06 of previous value      
               t1old=term1
               tol=abs(term1/1e+06) ! tol=term1/10000. revised 2/17/2015, RLB
-                 term1=term1+flt1
-               delt1=abs(term1-t1old)
-               n1=n
-               if(delt1<=tol) exit
-               end do series_a_lt
+              term1=term1+flt1
+              delt1=abs(term1-t1old)
+              n1=n
+              if(delt1<=tol) exit
+            end do series_a_lt
             rfa=2.*dlz*term1/(pi*pi) 
-                  else
+          else
             series_a_et: do n=1,mmax ! early time solution
               rn=float(n)
               ar1=((2.*rn-1.)*dlz-(dlz-z))/(2.*t1)
@@ -105,20 +105,20 @@ temporal_loop: do m=1,nts+1
 ! test for convergence of series to within 1/1e+06 of previous value      
               t1old=term1
               tol=abs(term1/1e+06) ! tol=term1/10000. revised 2/17/2015, RLB
-                 term1=term1+fierfc1+fierfc2
-               delt1=abs(term1-t1old)
-               n1=n
-               if(delt1<=tol) exit
+              term1=term1+fierfc1+fierfc2
+              delt1=abs(term1-t1old)
+              n1=n
+              if(delt1<=tol) exit
             end do series_a_et
             rfa=2.*t1*term1
-                  end if
-                  if(lcvs .and. delt1>tol) then
-                    nccs=nccs+1
-                    nv(i)=1
-                    lcvs=.false.
-                  end if
-            if(n1>nmx) nmx=n1
-             if(n1<nmn) nmn=n1
+          end if
+          if(lcvs .and. delt1>tol) then
+            nccs=nccs+1
+            nv(i)=1
+            lcvs=.false.
+          end if
+          if(n1>nmx) nmx=n1
+          if(n1<nmn) nmn=n1
         else
           rfa=0.0
         end if
@@ -140,13 +140,13 @@ temporal_loop: do m=1,nts+1
 ! test for convergence of series to within 1/1e+06 of previous value      
               t2old=term2
               tol=abs(term2/1e+06) ! tol=term2/10000. revised 2/17/2015, RLB
-                 term2=term2+flt2
-               delt2=abs(term2-t2old)
-               n1=n
-               if(delt2<=tol) exit
-               end do series_b_lt
+              term2=term2+flt2
+              delt2=abs(term2-t2old)
+              n1=n
+              if(delt2<=tol) exit
+            end do series_b_lt
             rfb=2.*dlz*term2/(pi*pi)
-                  else
+          else
             series_b_et: do n=1,mmax ! early time solution
               rn=float(n)
               ar3=((2.*rn-1.)*dlz-(dlz-z))/(2.*t2)
@@ -156,62 +156,62 @@ temporal_loop: do m=1,nts+1
 ! test for convergence of series to within 1/1e+06 of previous value      
               t2old=term2
               tol=abs(term2/1e+06) ! tol=term2/10000. revised 2/17/2015, RLB
-                 term2=term2+fierfc3+fierfc4
-               delt2=abs(term2-t2old)
-               n1=n
-               if(delt2<=tol) exit
-               end do series_b_et
+              term2=term2+fierfc3+fierfc4
+              delt2=abs(term2-t2old)
+              n1=n
+              if(delt2<=tol) exit
+            end do series_b_et
             rfb=2.*t2*term2
-                  end if
-             if(lcvs .and. delt2>tol) then
-               nccs=nccs+1
-                    nv(i)=1
-               lcvs=.false.
-             end if
-             if(n1>nmx) nmx=n1
-             if(n1<nmn) nmn=n1
+          end if
+          if(lcvs .and. delt2>tol) then
+            nccs=nccs+1
+            nv(i)=1
+            lcvs=.false.
+          end if
+          if(n1>nmx) nmx=n1
+          if(n1<nmn) nmn=n1
         else
           rfb=0.0
         end if
         if(tfac1>late_t) then
-             rf(j)=rf(j)-rik(i+(mm-1)*imax)*(rfa-rfb)
+          rf(j)=rf(j)-rik(i+(mm-1)*imax)*(rfa-rfb)
         else
-             rf(j)=rf(j)+rik(i+(mm-1)*imax)*(rfa-rfb)
+          rf(j)=rf(j)+rik(i+(mm-1)*imax)*(rfa-rfb)
         end if
-           if(rfa==0.0 .and. rfb==0.0) exit ! skip unnecessary cycles, RLB, 2/19/2015
+        if(rfa==0.0 .and. rfb==0.0) exit ! skip unnecessary cycles, RLB, 2/19/2015
       end do temporal_loop_1 
     end if
     bline(j)=z*beta
     if(abs(rf(j))>0.0) then ! added 17AUG2009 RLB 
-              ptran(j)=rf(j)
+      ptran(j)=rf(j)
     end if
-       p(j)=pzero(j)+ptran(j)
+    p(j)=pzero(j)+ptran(j)
     ptest=p(j)-bline(j)
     if(ptest > 0.0) then
       p(j)=bline(j)
     end if
     z=z+zinc
-     end do Z_loop  
-     if(m==1) p0zmx=p(nzs+1) ! Added 6 May 2013, RLB 
+  end do Z_loop  
+  if(m==1) p0zmx=p(nzs+1) ! Added 6 May 2013, RLB 
 ! find new height of rising water table in zones of upward seepage   
   if(rikzero(i)<0.0) then
-     zinc=(dlz-zmin)/zns
+    zinc=(dlz-zmin)/zns
     z=zmin
     newdep=0.0
-       do j=1,nzs+1
+    do j=1,nzs+1
       if(p(j)<0.0) newdep=z
       z=z+zinc
-            end do
+    end do
 ! adjust presures 
-       z=zmin
+    z=zmin
     do j=1,nzs+1
       if(p(j)>0.0 .and. z<newdep) p(j)=0.d0
       if(p(j)>=0.0 .and. z>=newdep) p(j)=beta*(z-newdep)
       z=z+zinc    
-       end do
-     end if
+    end do
+  end if
 ! Compute factor of safety & save results    
-     z=zmin
+  z=zmin
   Z_FS_loop: do j=1,nzs+1    
     if (abs(a1)>1.e-5 .and. z>1.e-30) then
       if(lpge0 .and. p(j)<0.) then !option added 4/15/2010
@@ -225,8 +225,8 @@ temporal_loop: do m=1,nts+1
     fs=ff+fw(j)+fc(j)
 ! frictional strength cannot be less than zero
     if ((ff+fw(j))<0.) fs=fc(j)
-     if (fs>finf) fs=finf
-     if (z<=1.e-02) fs=finf 
+    if (fs>finf) fs=finf
+    if (z<=1.e-02) fs=finf 
     if (jf>0) then
       if (fs<fmn) then
         fmn=fs 
@@ -234,38 +234,38 @@ temporal_loop: do m=1,nts+1
         pmn=p(j) ! revised 4/15/2010
       end if
 ! Store pressure head and related output in 3-d arrays. Added 17Nov2014, RLB
-         if(flag<0 .or. outp(1)) then
-                  p3d(i+(jf-1)*imax,j)=p(j)
-                  newdep3d(i+(jf-1)*imax)=newdep
-                  dh3d(i+(jf-1)*imax)=0.d0
-                end if 
-       if(flag==-1) fs3d(i+(jf-1)*imax,j)=fs
-       if(flag==-2) then
-         fs3d(i+(jf-1)*imax,j)=fs
-         ptran3d(i+(jf-1)*imax,j)=ptran(j)
-         pzero3d(i,j)=pzero(j)
-              end if
-       if(flag==-3) then
-         fs3d(i+(jf-1)*imax,j)=fs
-         th3d(i+(jf-1)*imax,j)=ths(zo(i))
-              end if
-              if(flag<=-4 .or. outp(1)) th3d(i+(jf-1)*imax,j)=ths(zo(i))
+      if(flag<0 .or. outp(1)) then
+        p3d(i+(jf-1)*imax,j)=p(j)
+        newdep3d(i+(jf-1)*imax)=newdep
+        dh3d(i+(jf-1)*imax)=0.d0
+      end if 
+      if(flag==-1) fs3d(i+(jf-1)*imax,j)=fs
+      if(flag==-2) then
+        fs3d(i+(jf-1)*imax,j)=fs
+        ptran3d(i+(jf-1)*imax,j)=ptran(j)
+        pzero3d(i,j)=pzero(j)
+      end if
+      if(flag==-3) then
+        fs3d(i+(jf-1)*imax,j)=fs
+        th3d(i+(jf-1)*imax,j)=ths(zo(i))
+      end if
+      if(flag<=-4 .or. outp(1)) th3d(i+(jf-1)*imax,j)=ths(zo(i))
     end if
     z=z+zinc
-     end do Z_FS_loop
+  end do Z_FS_loop
 !  next statement assumes that computations begin at surface and work downward   
   if (jf>0) then  ! revised 4/29/2010 to include pmin() RLB
     fsmin(i+(jf-1)*imax)=fmn
     if(fmn==finf) then ! Added 30 Jan 2013, RLB 
       pmn=p(nzs+1)
       zfmin(i+(jf-1)*imax)=zmax(i)
-            end if 
+    end if 
     if(lpge0 .and. pmn<0.) then !option added 4/15/2010
       pmin(i+(jf-1)*imax)=0.
     else
       pmin(i+(jf-1)*imax)=pmn
     end if
   end if
-       end do temporal_loop 
+end do temporal_loop 
 return
 end subroutine svgstp

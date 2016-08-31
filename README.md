@@ -24,7 +24,7 @@ TRIGRS and its companion utility programs, TopoIndex, GridMatch, and UnitConvert
 
 ### Latest version (March 2016) ###
 
-This release, 2.1.0a, includes bug fixes, new output formats, and various optimizations to improve performance of the TRIGRS serial code.  These improvements have also been incorporated into a new parallel implementation of the TRIGRS program (Alvioli and Baum, in review).  We have parallelized the four time-demanding execution modes of TRIGRS, namely both the saturated and unsaturated model with finite and infinite soil depth options, within the Message Passing Interface (MPI) framework. Performance gain with respect to the serial code was tested both on commercial hardware and on a high-performance multi-node machine. We also compared results of the parallel code against results of the serial code for a large study area in Colorado to verify accuracy of the results.  
+This release, 2.1.0a, includes bug fixes, new output formats, and various optimizations to improve performance of the TRIGRS serial code.  These improvements have also been incorporated into a new parallel implementation of the TRIGRS program (Alvioli and Baum, 2016).  We have parallelized the four time-demanding execution modes of TRIGRS, namely both the saturated and unsaturated model with finite and infinite soil depth options, within the Message Passing Interface (MPI) framework. Performance gain with respect to the serial code was tested both on commercial hardware and on a high-performance multi-node machine. We also compared results of the parallel code against results of the serial code for a large study area in Colorado to verify accuracy of the results.  
 
 ### Testing ###
 

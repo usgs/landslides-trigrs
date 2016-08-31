@@ -14,14 +14,14 @@ c !
 c !  	
 	open(u,file=trim(infil),status='old',err=23)
 	do 200, m=1,6
-	lncnt=m
+        lncnt=m
 	read(u,*,err=130) header(m),param(m)
 	header(m)=adjustl(header(m))
   200	continue
 c ! set default value of nodat & celsiz for use with GRASS GIS ascii files   
   	nodat=-9999.d0
   	celsiz=-10.d0
-	do 210, m=1,6
+	do 210, m=1,6	   
 	h1=header(m); h1=adjustl(h1)
 	if(trim(h1).eq.'ncols'.or.trim(h1).eq.'NCOLS')ncol=int(param(m))
 	if(trim(h1).eq.'nrows'.or.trim(h1).eq.'NROWS')nrow=int(param(m))
@@ -69,7 +69,7 @@ c !  count maintained by ctr should coincide with node numbers from GIS
 c !  pf1() keeps track of positions of nodata values so that results
 c !  can be written out in grid format.
         lncnt=m+6
-  	read(u,*,end=125,err=130) (temp(i), i=1,ncol)
+	read(u,*,end=125,err=130) (temp(i), i=1,ncol)
 	do 250, i=1,ncol
 	  pf1(i+(m-1)*ncol)=temp(i)
 	  if(temp(i).ne.nodats) then
@@ -78,18 +78,18 @@ c !  can be written out in grid format.
               write (*,* )'Subroutine srdgrd reports'
   	      write(*,*) 'Number of data cells exceeds array size'
 	      write (*,*) '--> ',trim(infil)
-  	      write(*,*) 'Check imax value in grid_size.txt file
-     + no-data values in input grid.'
+  	      write(*,*) 'Check imax value in grid_size.txt file and
+     + no-data values in input grid.'	    	
               write (u1,*) 'Subroutine srdgrd reports'
   	      write(u1,*) 'Number of data cells exceeds array size'
 	      write (u1,*) '--> ',trim(infil)
-  	      write(u1,*) 'Check imax value in grid_size.txt file
-     + no-data values in input grid.'
+  	      write(u1,*) 'Check imax value in grid_size.txt file and
+     + no-data values in input grid.'	    	
   	      write(*,*) 'Press RETURN to exit'
   	      read*
   	      close(u)
 	      close(u1)
-	    stop 'Error in subroutine srdgrd'
+	      stop 'Error at line 77 in subroutine srdgrd'
 	    end if
 	    pf(ctr)=temp(i)
 	  end if
@@ -109,14 +109,15 @@ c !  can be written out in grid format.
 	close(u)
 	close(u1)
 	stop '-23 in srdgrd()'
-  130	continue
+ 130	continue
   	write (*,*) 'Error reading grid file, line '
 	write(*,*)'--> ',trim(infil), lncnt
   	write (u1,*) 'Error reading grid file, line '
 	write(u1,*)'--> ',trim(infil), lncnt
-                write(*,*) 'Press RETURN to exit'
-                read*
+        write(*,*) 'Press RETURN to exit'
+        read*
 	close(u)
 	close(u1)
 	stop '-130 in subroutine srdgrd'
 	end
+

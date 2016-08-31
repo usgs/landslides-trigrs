@@ -13,7 +13,7 @@ subroutine srdgrd_p(grd,pth,ncol,nrow,celsiz,nodat,pf,pf1,ctr,imax,temp,u,infil,
   real pf(imax),pf1(grd),temp(pth),nodats
   character*14 header(6),h1
   character*255 infil
-  integer myrank,isize,ierr  
+  integer myrank,isize,ierr, errcode  
   Call MPI_COMM_RANK(MPI_COMM_WORLD, myrank, ierr)
   Call MPI_COMM_SIZE(MPI_COMM_WORLD, isize, ierr)
   !  	
@@ -100,6 +100,8 @@ subroutine srdgrd_p(grd,pth,ncol,nrow,celsiz,nodat,pf,pf1,ctr,imax,temp,u,infil,
                  close(u)
                  close(u1)
               endif
+              call MPI_FINALIZE(ierr)
+              stop 'Error at line 90 in subroutine srdgrd_p'
            end if
            pf(ctr)=temp(i)
         end if
@@ -112,23 +114,24 @@ subroutine srdgrd_p(grd,pth,ncol,nrow,celsiz,nodat,pf,pf1,ctr,imax,temp,u,infil,
   if(myrank.eq.0) then
      write(*,*)'***Error opening input file in subroutine srdgrd***'
      write(*,*)'--> ',trim(infil)
-     write(*,*)'Check file name and location'
+     write(*,*)'23, Check file name and location'
      write(u1,*)'***Error opening input file in subroutine srdgrd***'
      write(u1,*)'--> ',trim(infil)
-     write(u1,*)'Check file name and location'
+     write(u1,*)'23, Check file name and location'
      close(u)
      close(u1)
   endif
-  call MPI_FINALIZE(ierr)
+  call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!  call MPI_FINALIZE(ierr)
   stop '-23 in srdgrd()'
 130 continue
-  write (*,*) 'Error reading grid file, line '
+  write (*,*) '130, Error reading grid file, line '
   write(*,*)'--> ',trim(infil), lncnt
-  write (u1,*) 'Error reading grid file, line '
+  write (u1,*) '130, Error reading grid file, line '
   write(u1,*)'--> ',trim(infil), lncnt
-  write(*,*) 'Press RETURN to exit'
-  read*
   close(u)
   close(u1)
-  stop '-130 in subroutine irdgrd'
+  call MPI_ABORT(MPI_COMM_WORLD, errcode, ierr)
+!  call MPI_FINALIZE(ierr)
+  stop '-130 in subroutine srdgrd_p'
 end subroutine srdgrd_p

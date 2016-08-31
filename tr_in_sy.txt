@@ -1,5 +1,5 @@
 Name of project (up to 255 characters)
-TRIGRS, version 2.0.10h, one dimension test Srivastava and Yeh 
+TRIGRS, version 2.1.00a, one dimension test Srivastava and Yeh 
 tx, nmax, mmax,  zones
 20, 100, -100,    1
 nzs,  zmin,   uww, nper,  t
