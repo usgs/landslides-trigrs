@@ -25,7 +25,7 @@
 	character (len=8):: sdate
 	character (len=6):: vrsn
      	call date_and_time(sdate,stime)
-	vrsn='1.0.05'; bldate='24 Mar 2016'
+	vrsn='1.0.06'; bldate='03 Jan 2017'
 	u=(/11,12,13,14,15,16/)
  	tb=char(9)
 !  Open log file
@@ -210,7 +210,8 @@
   	write (u(2),*) 'Error reading initialization file'
 	write (u(2),*) '--> ',trim(init)
 	write (u(2),*) 'Check file contents and organization'
-	pause 'Press RETURN to exit'
+	write(*,*) 'Press RETURN to exit'
+        read*
 	stop
    15	continue
   	write (*,*) 'Error reading initialization file'
@@ -219,7 +220,8 @@
   	write (u(2),*) 'Error reading initialization file'
 	write (u(2),*) '--> ',trim(init)
 	write (u(2),*) 'Check file contents and organization'
-	pause 'Press RETURN to exit'
+	write(*,*) 'Press RETURN to exit'
+        read*
 	stop
    20	continue
   	write (*,*) 'Error opening output file'
@@ -228,6 +230,7 @@
   	write (u(2),*) 'Error opening output file'
 	write (u(2),*) '--> ',trim(outfil)
 	write (u(2),*) 'Check file path and status'
-	pause 'Press RETURN to exit'
+	write(*,*) 'Press RETURN to exit'
+        read*
 	stop
    	end program gridmatch
