@@ -25,7 +25,7 @@ MPIF90 = mpif90 -w -O3
 F90FLAGS = -w -O3
 LDFLAGS = -w -O3
 
-all: $(TRG) $(PRG) $(TPX)
+all: $(TRG) $(PRG)
 #-----------------------------------------------------------------
 
 $(TRG): $(OBJT95) $(OBJT90) $(OBJT77) 
