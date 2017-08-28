@@ -219,6 +219,11 @@ The software performance has been measured on: 1) Ubuntu 14.04 LTS Linux install
 
 **Figure 2. Overall running time, TTot, as a function of the number of MPI processes, Np, for various dataset sizes obtained from a single dataset by changing the working resolution. “2” (original dataset with artificially increased resolution): 26,800,000 cells; “1” (original dataset): 13,410,000 cells; “1/2”: 6,705,000 cells; “1/4”: 3,352,500 cells; “1/8”: 1,676,250 cells; “1/16”: 838,125 cells.**
 
+Dependencies
+------------
+
+In addition to standard Fortran development tools, please note that to compile the code,  mpi development tools must be installed on your system.  For example the **openmpi** library will not be enough, but, **libopenmpi-devel** must also be installed on cygwin or **libopenmpi-dev** on ubuntu.  Similarly, other operating systems will require installation of the appropriate mpi development libraries in order to compile the parallel version of TRIGRS.  Alternately installing and building **mpich** directly on the system before attempting to compile the parallel version of TRIGRS should work smoothly.
+
 Installing and using the code
 -----------------------------
 
