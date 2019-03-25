@@ -29,7 +29,7 @@ grid_loop: do i=1,imx1
     fsmin(i)=finf+1.
     zfmin(i)=zmax(i)
     pmin(i)=0.
-    if (mod(i,2000)==0) write (*,fmt='(2x,i10,2x,a1)',advance="no") i,char(13) ! cells completed
+    if (mod(i,2000)==0) write (*,fmt='(2x,i0,a1, i0, 2x,a1)',advance="no") i, '/', imx1, char(13) ! cells completed
     cycle grid_loop
   end if
   rphi=phi(zo(i))

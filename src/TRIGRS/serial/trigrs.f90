@@ -32,6 +32,9 @@ character (len=7):: vrsn
 character (len=11):: bldate
 character (len=2)::pid(3)
 logical :: lwarn !, lwarn2
+
+real(kind=8) :: start, finish
+
 ! first executable statement ............
 call date_and_time(date,time)
 test=-9999.D0; test1=-9999.
@@ -458,6 +461,9 @@ end if
 ! 4/14/2010 added option to let file extension be either ".asc" or ".txt"
 101 continue
   write(*,*) 'Saving results'
+
+  call cpu_time(start)
+
   ti=tiny(param(1)) ! Changed from param(m) to param(1), 28 Jan 2013, RLB
   do j=1,nout
     write(stp,'(i4)') j
@@ -553,6 +559,11 @@ end if
     call isvgrd(nv,imax,pf1,row,col,u(14),test,test,mnd,&
       & parami,u(19),outfil,ti,header)
   end if
+
+call cpu_time(finish)
+
+write(*, '(a, g0, a)') "Wrote results in ", finish - start, "(s)"
+
 write (*,*) 'TRIGRS finished!'
 write (u(19),*) 'TRIGRS finished normally'
 if(flag<=-1) close(u(2)) ! moved from subroutines 1 Dec 2011 RLB

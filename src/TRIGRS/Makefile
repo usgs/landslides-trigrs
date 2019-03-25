@@ -18,9 +18,9 @@ LIBS =
 
 CC = gcc -O3
 CCFLAGS = -lgsl -lgslcblas -lm
-FC = f95 -w -O3 
+FC = gfortran -w -O3 
 FFLAGS =
-F90 = f95 -w -O3
+F90 = gfortran -w -O3
 MPIF90 = mpif90 -w -O3
 F90FLAGS = -w -O3
 LDFLAGS = -w -O3
