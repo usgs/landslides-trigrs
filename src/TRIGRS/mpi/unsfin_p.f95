@@ -22,14 +22,21 @@ subroutine unsfin_p(imx1,ulog,u1,ncc,nccs)
   integer myrank,isize,ierr
   integer ncc_0,nccs_0
   integer MPI_TRIGRS
+
+  real(kind=8) :: start, finish
+
   Call MPI_COMM_RANK(MPI_COMM_WORLD, myrank, ierr)
   Call MPI_COMM_SIZE(MPI_COMM_WORLD, isize, ierr)
+
   ncc_0=0; nccs_0=0
   nmax3=0; nmax0=0; nmxs=0 ! modified 10 Nov 2014, RLB
   nmn1=nmax+1; nmin1=nmax+1
   nmxp=0; nmnp=0; svgctr=0; nmns=0 ! Added 29 Jan 2013, RLB, Revised 10 Nov 2014, RLB
   intq=0.d0; intq1=0.d0 ! Added 29 Jan 2013, RLB 
   if(myrank.eq.0) then
+
+     start = MPI_Wtime()
+
      write(ulog,*) 'Starting coupled saturated & unsaturated zone'
      write(ulog,*) 'computations for finite-depth saturated zone'
      write(*,*) 'Starting coupled saturated & unsaturated zone'
@@ -242,9 +249,13 @@ subroutine unsfin_p(imx1,ulog,u1,ncc,nccs)
 999  continue
   end do grid_loop
   if(myrank.eq.0) then
-     write(*,*)
-     write (*,*) imx1, ' cells completed' 
-     write (ulog,*) imx1, ' cells completed' 
+      finish = MPI_Wtime()
+
+      write(*,*)
+      write (*,'(a, g0, a)') ' cells completed in ', finish - start, '(s)'
+      start = finish
+      write (*,*) imx1, ' cells completed' 
+      write (ulog,*) imx1, ' cells completed' 
   endif
   Call MPI_BARRIER(MPI_COMM_WORLD,ierr)
   if(myrank.eq.0) write(*,*) " (MPI) collecting results .. "
@@ -312,10 +323,14 @@ subroutine unsfin_p(imx1,ulog,u1,ncc,nccs)
   endif
   if(myrank.eq.0) then
      write(*,*) " (MPI) results collected .. "
-     ncc =ncc_0
-     nccs=nccs_0
-     nv  =nv_0
-     nvu =nvu_0
+     finish = MPI_Wtime()
+
+      write(*,*)
+      write (*,'(a, g0, a)') ' cells completed in ', finish - start, '(s)  '
+      ncc =ncc_0
+      nccs=nccs_0
+      nv  =nv_0
+      nvu =nvu_0
   endif
   if(nmin>nmax2) nmin=nmax2; if(nmin1>nmax3) nmin1=nmax3
   if(myrank.eq.0) then
