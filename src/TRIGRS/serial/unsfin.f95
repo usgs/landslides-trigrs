@@ -13,7 +13,9 @@ real:: delwt,dwt,zwt,qbij(nts+1)
 real (double)::rf(nzs+1),finf,vqt,qta,al,qzmax 
 real (double)::ddwt,sqin,intq(nts+1),b,dhwt(nts+1),delh 
 real (double)::qtn(2*nts+1),intq1(nts+1),vqtn,cd
+
 real(kind=8) :: start, finish
+
 nmax3=0;nmax0=0
 nmn1=nmax+1;nmin1=nmax+1
 nmxp=0; nmnp=0; svgctr=0; nmns=0; nmxs=0 ! Added 29 Jan 2013, RLB, Revised 10 Nov 2014, RLB  
