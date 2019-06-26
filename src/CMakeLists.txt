@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.8)
-project(landslide_triggers LANGUAGES Fortran)
+cmake_minimum_required(VERSION 3.12)
+project(landslide_trigrs LANGUAGES Fortran)
 
 # Optional parameters to use
 # -DCMAKE_Fortran_COMPILER=/path/to/fortran/compiler
@@ -17,9 +17,11 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../myCMakeFiles")
 # on all platforms.
 include(GNUInstallDirs)
 
+
 # Setup the Fortran cmake environment
 # Sets up the flags for compiling shared libraries or static libraries, and returns the libType parameter.
 include("${CMAKE_MODULE_PATH}/FortranEnvironment.cmake")
+include("${CMAKE_MODULE_PATH}/hdf5.cmake")
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/TRIGRS/serial)
 
