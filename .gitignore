@@ -1,0 +1,7 @@
+build
+bin
+include
+*.mod
+lib
+examples/data/output*
+
