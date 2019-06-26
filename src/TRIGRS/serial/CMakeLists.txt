@@ -37,4 +37,5 @@ add_executable(${PROJECT_NAME} "${CMAKE_CURRENT_LIST_DIR}/trigrs.f90"
                                "${CMAKE_CURRENT_LIST_DIR}/roots.f"
                                "${CMAKE_CURRENT_LIST_DIR}/srdgrd.f"
                                "${CMAKE_CURRENT_LIST_DIR}/srdswm.f"
-                               "${CMAKE_CURRENT_LIST_DIR}/ssvgrd.f")                           
+                               "${CMAKE_CURRENT_LIST_DIR}/ssvgrd.f"
+                               "${CMAKE_CURRENT_LIST_DIR}/m_writeHDF5.f90")                           
