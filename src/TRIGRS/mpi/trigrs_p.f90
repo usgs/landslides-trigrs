@@ -10,6 +10,9 @@ program trigrs_mpi
   use mpi
   use modules_p
   use partial_arrays_p
+
+  use m_writeHDF5File, only: writeHDF5File
+
   implicit none
   integer, parameter::ulen=25 !Added 12/7/2010 RLB
   integer:: grd
@@ -38,6 +41,11 @@ program trigrs_mpi
   character (len=2)::pid(3)
   logical :: lwarn !, lwarn2
   integer myrank,isize,ierr
+
+  real, allocatable :: pf12D(:, :)
+
+  real(kind = 8) :: start,  finish
+
   Call MPI_INIT(ierr)   ! MPI initialization calls
   Call MPI_COMM_RANK(MPI_COMM_WORLD, myrank, ierr)
   Call MPI_COMM_SIZE(MPI_COMM_WORLD, isize, ierr)
@@ -566,34 +574,73 @@ program trigrs_mpi
   write (u(19),*) 'Date ',date(5:6),'/',date(7:8),'/',date(1:4)
   write (u(19),*) 'Time ',time(1:2),':',time(3:4),':',time(5:6)
   write(*,*) 'Saving results'
+
+  start = MPI_Wtime()
+
+  allocate(pf12D(col, row))
+  pf12D = reshape(pf1, [col, row])
+  ! Replaced ascii write out with HDF5
+
+  if (outp(1)) then ! computed water table
+      call writeHDF5File(nout, row, col, imx1, imax, wtab, pf12D, test1, trim(folder) // trim(wtabfil) // el_or_dep // '_' // trim(suffix) // ".h5")
+  end if
+
+  if (outp(3)) then
+      call writeHDF5File(nout, row, col, imx1, imax, fsmin_0, pf12D, test1, trim(folder) // trim(fminfil) // trim(suffix) // ".h5")
+  endif
+  if (outp(4)) then
+      call writeHDF5File(nout, row, col, imx1, imax, zfmin_0, pf12D, test1, trim(folder) // trim(zfminfil) // trim(suffix) // ".h5")
+  endif
+  if (outp(5)) then
+      call writeHDF5File(nout, row, col, imx1, imax, pmin_0, pf12D, test1, trim(folder) // trim(pminfil) // trim(suffix) // ".h5")
+  endif
+
+  if (outp(7) .and. unsat0) then ! incremental basal flux,  unsaturated zone
+    call writeHDF5File(nts, row, col, imx1, imax, rik1, pf12D, test1, 'TRunszfluxTS' // trim(suffix) // ".h5")
+  end if  
+
+
+  if (ncc > 0) then ! non - convergent cells,  unsaturated zone (12 / 6 / 2010,  changed unit # from 7 to 14)
+    call writeHDF5File(row, col, nvu, pf12D, test1, trim(folder) // ncvfil // 'UZ_' // trim(suffix) // ".h5")
+  end if
+  if (nccs > 0) then ! non - convergent cells,  saturated zone
+    call writeHDF5File(row, col, nv, pf12D, test1, trim(folder) // ncvfil // 'SZ_' // trim(suffix) // ".h5")
+  end if
+
+
+
+
+
+
+
   ti=tiny(param(1)) ! Changed from param(m) to param(1), 28 Jan 2013, RLB
   do j=1,nout
      write(stp,'(i4)') j
      stp=adjustl(stp)
-     if (outp(3)) then ! minimum factor of safety
-        tfg=0.
-        do i=1,imx1
-           tfg(i)=fsmin_0(i+(j-1)*imax)
-        end do
-        outfil=trim(folder)//trim(fminfil)//trim(suffix)//'_'//trim(stp)//grxt
-        call ssvgrd(tfg,imax,pf1,row,col,u(4),test1,param,u(19),outfil,ti,header)
-     end if
-     if (outp(4)) then ! depth of minimum factor of safety
-        tfg=0.
-        do i=1,imx1
-           tfg(i)=zfmin_0(i+(j-1)*imax)
-        end do
-        outfil=trim(folder)//trim(zfminfil)//trim(suffix)//'_'//trim(stp)//grxt
-        call ssvgrd(tfg,imax,pf1,row,col,u(5),test1,param,u(19),outfil,ti,header)
-     end if
-     if (outp(5)) then ! pressure head at depth of minimum factor of safety
-        tfg=0.
-        do i=1,imx1
-           tfg(i)=pmin_0(i+(j-1)*imax)
-        end do
-        outfil=trim(folder)//trim(pminfil)//trim(suffix)//'_'//trim(stp)//grxt
-        call ssvgrd(tfg,imax,pf1,row,col,u(6),test1,param,u(19),outfil,ti,header)
-     end if
+   !   if (outp(3)) then ! minimum factor of safety
+   !      tfg=0.
+   !      do i=1,imx1
+   !         tfg(i)=fsmin_0(i+(j-1)*imax)
+   !      end do
+   !      outfil=trim(folder)//trim(fminfil)//trim(suffix)//'_'//trim(stp)//grxt
+   !      call ssvgrd(tfg,imax,pf1,row,col,u(4),test1,param,u(19),outfil,ti,header)
+   !   end if
+   !   if (outp(4)) then ! depth of minimum factor of safety
+   !      tfg=0.
+   !      do i=1,imx1
+   !         tfg(i)=zfmin_0(i+(j-1)*imax)
+   !      end do
+   !      outfil=trim(folder)//trim(zfminfil)//trim(suffix)//'_'//trim(stp)//grxt
+   !      call ssvgrd(tfg,imax,pf1,row,col,u(5),test1,param,u(19),outfil,ti,header)
+   !   end if
+   !   if (outp(5)) then ! pressure head at depth of minimum factor of safety
+   !      tfg=0.
+   !      do i=1,imx1
+   !         tfg(i)=pmin_0(i+(j-1)*imax)
+   !      end do
+   !      outfil=trim(folder)//trim(pminfil)//trim(suffix)//'_'//trim(stp)//grxt
+   !      call ssvgrd(tfg,imax,pf1,row,col,u(6),test1,param,u(19),outfil,ti,header)
+   !   end if
      if (flag<=-4 .or. outp(1)) then ! Moved from computational subroutines 17Nov2014, RLB
         if (flag>=-6) then
            do i=1,imx1
@@ -619,42 +666,47 @@ program trigrs_mpi
            end do
         endif
      end if
-     if (outp(1)) then ! computed water table
-        tfg=0.
-        do i=1,imx1
-           tfg(i)=wtab(i+(j-1)*imax)
-        end do
-        outfil=trim(folder)//trim(wtabfil)//el_or_dep//'_'//trim(suffix)//'_'//trim(stp)//grxt
-        call ssvgrd(tfg,imax,pf1,row,col,u(6),test1,param,u(19),outfil,ti,header)
-     end if
+   !   if (outp(1)) then ! computed water table
+   !      tfg=0.
+   !      do i=1,imx1
+   !         tfg(i)=wtab(i+(j-1)*imax)
+   !      end do
+   !      outfil=trim(folder)//trim(wtabfil)//el_or_dep//'_'//trim(suffix)//'_'//trim(stp)//grxt
+   !      call ssvgrd(tfg,imax,pf1,row,col,u(6),test1,param,u(19),outfil,ti,header)
+   !   end if
   end do
   if(flag<=-1 .and. flag>=-3) then
      !	      write(*,*)'j,tsav(j)',j,tsav(j)
      call svlist(u(2),tsav(j),j)
   end if  
-  if (outp(7) .and. unsat0) then ! incremental basal flux, unsaturated zone
-     do j=1,nts
-        ir=0.
-        do i=1,imx1
-           ir(i)=rik1(i+(j-1)*imax)
-        end do
-        ti=tiny(param(1))
-        write(scratch,'(i6)') j
-        scratch=adjustl(scratch)
-        irfil='TRunszfluxTS'//trim(scratch)//trim(suffix)//grxt
-        irfil=adjustl(irfil)
-        outfil=trim(folder)//trim(irfil)
-        call ssvgrd(ir,imax,pf1,row,col,u(9),test1,param,u(19),outfil,ti,header)
-     end do
-  end if
-  if (ncc>0) then ! non-convergent cells, unsaturated zone (12/6/2010, changed unit # from 7 to 14)
-     outfil=trim(folder)//ncvfil//'UZ_'//trim(suffix)//grxt
-     call isvgrd(nvu,imax,pf1,row,col,u(14),test,test,mnd,parami,u(19),outfil,ti,header)
-  end if
-  if (nccs>0) then ! non-convergent cells, saturated zone
-     outfil=trim(folder)//ncvfil//'SZ_'//trim(suffix)//grxt
-     call isvgrd(nv,imax,pf1,row,col,u(14),test,test,mnd,parami,u(19),outfil,ti,header)
-  end if
+!   if (outp(7) .and. unsat0) then ! incremental basal flux, unsaturated zone
+!      do j=1,nts
+!         ir=0.
+!         do i=1,imx1
+!            ir(i)=rik1(i+(j-1)*imax)
+!         end do
+!         ti=tiny(param(1))
+!         write(scratch,'(i6)') j
+!         scratch=adjustl(scratch)
+!         irfil='TRunszfluxTS'//trim(scratch)//trim(suffix)//grxt
+!         irfil=adjustl(irfil)
+!         outfil=trim(folder)//trim(irfil)
+!         call ssvgrd(ir,imax,pf1,row,col,u(9),test1,param,u(19),outfil,ti,header)
+!      end do
+!   end if
+!   if (ncc>0) then ! non-convergent cells, unsaturated zone (12/6/2010, changed unit # from 7 to 14)
+!      outfil=trim(folder)//ncvfil//'UZ_'//trim(suffix)//grxt
+!      call isvgrd(nvu,imax,pf1,row,col,u(14),test,test,mnd,parami,u(19),outfil,ti,header)
+!   end if
+!   if (nccs>0) then ! non-convergent cells, saturated zone
+!      outfil=trim(folder)//ncvfil//'SZ_'//trim(suffix)//grxt
+!      call isvgrd(nv,imax,pf1,row,col,u(14),test,test,mnd,parami,u(19),outfil,ti,header)
+!   end if
+
+  finish = MPI_Wtime()
+
+  write( * ,  '(a,  g0,  a)') "Wrote results in ",  finish  -  start,  "(s)"
+
   write (*,*) 'TRIGRS finished!'
   write (u(19),*) 'TRIGRS finished normally'
   if(flag<=-1) close(u(2)) ! moved from subroutines 1 Dec 2011 RLB

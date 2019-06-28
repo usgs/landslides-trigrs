@@ -18,6 +18,19 @@ At the beginning of a project, the user would prepare a digital elevation model,
 
 This distribution includes source code files for the program TRIGRS and three companion utility programs, TopoIndex, GridMatch, and UnitConvert.  It also includes sample data in the data folder and sample initialization files in the main folder.  Empty folders for documentation, "doc" and executable binaries, "bin", are also included in the top-level directory.
 
+### Compiling the source code ###
+
+We have chosen to use CMAKE to build the Fortran codes due to its easy cross platform nature. To do so, create a new folder in the root directory called "build".  Type "cmake [other options] ../src" to generate the make files. 
+
+You will need a minimum cmake version of 3.12.
+You will also need a fortran compiler that can handle modules.
+
+Then type "make" to compile the source.
+
+This process will compile the serial version of the landslide\_triggers code and, if MPI is detected, an MPI enabled version.  Both versions need access to a HDF5 library with Fortran and high level capabilities.  If during the compilation process the build fails to detect HDF5, set an environment variable called "HDF5\_ROOT" that contains the directory of the HDF5 install you wish to link to.
+
+For an MPI enabled build, specify the c, cxx, and fortran compilers during the cmake stage as follows, "cmake -DCMAKE\_C\_COMPILER=mpicc -DCMAKE\_CXX\_COMPILER=mpicxx -DCMAKE\_Fortran\_COMPILER=mpif90 ../src"
+
 ### User Interface ###
 
 TRIGRS and its companion utility programs, TopoIndex, GridMatch, and UnitConvert, run from the command line and have limited user interaction.  Each program uses an initialization file that contains basic data needed to run the program as well as the names of other input files.  

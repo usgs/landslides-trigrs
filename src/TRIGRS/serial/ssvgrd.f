@@ -18,53 +18,55 @@ c !  z3 to the grid format
 	sp=char(32)
 	ctr=0
 c !  open and initialize output grid files 
-        outfil=adjustl(outfil)
+	outfil=adjustl(outfil)
+	
 	open (u,file=trim(outfil), status='unknown',err=20)
-	do 100, m=1,6
-	     a=param(m)
-	     ia=int(param(m))
-c ! 19 Apr 2010 added special cases for m=1,2, and 6
-	     if(m.le.2) then
- 	      write(scratch,'(i16)') ia
- 	     else if(m.eq.6) then
- 	      write(scratch,'(f15.0)') a      
-	     else if(abs(a-ia).le.ti) then
- 	      write(scratch,'(i16)') ia
-	     else
- 	      write(scratch,*) a
-	     end if
-	  scratch=adjustl(scratch)
-	  header(m)=adjustl(header(m))
-	  write(u,1012) trim(header(m)),trim(scratch)
-  100	continue
+	
+	do m=1,6
+		a=param(m)
+		ia=int(param(m))
+		! 19 Apr 2010 added special cases for m=1,2, and 6
+		if(m.le.2) then
+			write(scratch,'(i16)') ia
+		else if(m.eq.6) then
+			write(scratch,'(f15.0)') a      
+		else if(abs(a-ia).le.ti) then
+			write(scratch,'(i16)') ia
+		else
+			write(scratch,*) a
+		end if
+		scratch=adjustl(scratch)
+		header(m)=adjustl(header(m))
+		write(u,1012) trim(header(m)),trim(scratch)
+	enddo
 c !  write grid 
-  	do 120, i=1,nrow
-	do 110, j=1,ncol
-	test=abs(z2(j,i)-nodata)
-  	if (test.le.0.1)then
-  	  write(scratch,1004) z2(j,i)
-	  scratch=adjustl(scratch)
-  	  if(j.ne.ncol) then
-  	  write(u,1010) trim(scratch),sp 
- 	  else
- 	  write(u,1011) trim(scratch) 
- 	  end if
-  	else
-  	  ctr=ctr+1
-   	  if (z3(ctr).eq.0)  then
-  	   write(scratch,1003) z3(ctr)
-  	  else
-   	   write(scratch,1004) z3(ctr)
- 	  end if
-	  scratch=adjustl(scratch)
- 	  if(j.ne.ncol) then
-  	    write(u,1010) trim(scratch),sp 
- 	  else
- 	    write(u,1011) trim(scratch) 
- 	  end if
-  	end if
-  110	continue
-  120	continue
+  	do i=1,nrow
+		do j=1,ncol
+			test=abs(z2(j,i)-nodata)
+			if (test.le.0.1)then
+				write(scratch,1004) z2(j,i)
+				scratch=adjustl(scratch)
+				if(j.ne.ncol) then
+					write(u,1010) trim(scratch),sp 
+				else
+					write(u,1011) trim(scratch) 
+				end if
+			else
+				ctr=ctr+1
+				if (z3(ctr).eq.0)  then
+					write(scratch,1003) z3(ctr)
+				else
+					write(scratch,1004) z3(ctr)
+				end if
+				scratch=adjustl(scratch)
+				if(j.ne.ncol) then
+					write(u,1010) trim(scratch),sp 
+				else
+					write(u,1011) trim(scratch) 
+				end if
+			end if
+		enddo
+	enddo
      	close (u)
  	return
    20	continue
@@ -79,7 +81,7 @@ c !  write grid
 	stop '-20 in ssvgrd()'
  1003	format(f2.0)
  1004	format(g12.4)
- 1010	format(a,a,$)
+ 1010	format(a,a)
  1011	format(a)
  1012	format(t1,a,t15,a)
 	end

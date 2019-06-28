@@ -13,6 +13,9 @@ real:: delwt,dwt,zwt,qbij(nts+1)
 real (double)::rf(nzs+1),finf,vqt,qta,al,qzmax 
 real (double)::ddwt,sqin,intq(nts+1),b,dhwt(nts+1),delh 
 real (double)::qtn(2*nts+1),intq1(nts+1),vqtn,cd
+
+real(kind=8) :: start, finish
+
 nmax3=0;nmax0=0
 nmn1=nmax+1;nmin1=nmax+1
 nmxp=0; nmnp=0; svgctr=0; nmns=0; nmxs=0 ! Added 29 Jan 2013, RLB, Revised 10 Nov 2014, RLB  
@@ -23,9 +26,12 @@ write(*,*) 'Starting coupled saturated & unsaturated zone'
 write(*,*) 'computations for finite-depth saturated zone'
 write(*,*) 'Cells completed: '
 ! loop over all grid cells
+
+call cpu_time(start)
+
 finf=10.
 grid_loop: do i=1,imx1 
-  if (mod(i-1,2000)==0) write (*,fmt='(2x,i10,2x,a1)',advance="no") i-1,char(13) ! cells completed
+  if (mod(i-1,2000)==0) write (*,fmt='(2x,i0,a1,i0,2x,a1)',advance="no") i,'/',imx1,char(13) ! cells completed
   if(slo(i)<slomin .or. slo(i)>slomax .or. zmax(i)<=0.0001) then ! default values for gently or steeply sloping cells 
     do jf=1,nout
       fsmin(i+(jf-1)*imax)=finf+1.
@@ -34,9 +40,11 @@ grid_loop: do i=1,imx1
     end do
     cycle
   end if
-  lcv=.true.;lcvs=.true.
-  q=0.;qb=0 ! qb initialization added 29 Jan 2013, RLB 
-  tolqk=ks(zo(i))*5.e-07 ! Moved 29 Jan 2013, RLB 
+  lcv=.true.
+  lcvs=.true.
+  q=0.
+  qb=0 ! qb initialization added 29 Jan 2013, RLB 
+  tolqk=ks(zo(i))*5.d-07 ! Moved 29 Jan 2013, RLB 
   do j=1,kper
     if(j>nper) then
       q(j)=0.
@@ -222,8 +230,11 @@ grid_loop: do i=1,imx1
     nmns=nmn
   end if
 end do grid_loop
+
+call cpu_time(finish)
+
 write(*,*)
-write (*,*) imx1, ' cells completed' 
+write (*,'(a, g0, a)') ' cells completed in ', finish - start, '(s)'
 write (ulog,*) imx1, ' cells completed' 
 !
 if(nmin>nmax2) nmin=nmax2; if(nmin1>nmax3) nmin1=nmax3

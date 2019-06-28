@@ -74,7 +74,7 @@ c !  write grid
  	write (u1,*) 'Subroutine isvgrd()'
 	stop '20 in isvgrd()'
  1005	format(i12)
- 1010	format(a,a,$)
+ 1010	format(a,a)
  1011	format(a)
  1012	format(t1,a,t15,a)
 	end
