@@ -9,6 +9,7 @@ use input_file_defs
 implicit none
 integer::i,jf,ulog,m,m1,nw,mfrst,mlast
 integer::mrpx(1),mrpn(1),dinc,wtctr,wctr,wptr(nzs+1),wtptr(nzs+1)
+real:: wtab_temp ! Added 2 Feb 2022, RLB
 real (double)::delh,newdep,zns,zinc,fdinc 
 real (double):: dwat,z,ptop,pbot,zwat(nzs+1),zbot,ztop,th_top,th_bot,zwat0
 real (double):: zdeep,pdeep,th_deep,zrpn,zrpx,relhgt,x,y 
@@ -40,6 +41,7 @@ th_deep=ths(zo(i))
 ! estimate height of water table from results of unsaturated infiltration model
 if(dcf>0. .and. (unsat(zo(i)) .or. igcap(zo(i)))) then
   if(rikzero(i)>=0.0) then
+    dusz = depth(i)-1.d0/(alp(zo(i))) ! Added 2 Feb 2022, RLB
     zwat(1)=elev(i)-(dusz-delh) ! statement in unsth() accounts for initial wt below zmax(i)
   else
     zwat(1)=elev(i)-newdep
@@ -93,11 +95,23 @@ if(outp(1)) then
   endif
   select case (el_or_dep) ! water table elevation or depth
     case('eleva')
-      wtab(i+(jf-1)*imax)=zwat(wptr(wtctr)) ! use lowest computed water table
+!      wtab(i+(jf-1)*imax)=zwat(wptr(wtctr)) ! use lowest computed water table
+      wtab_temp = zwat(wptr(wtctr)) ! use lowest computed water table  ! Revised 2 Feb 2022, RLB
+      if(wtab_temp < 0.) wtab_temp = elev(i)  
+      if (jf == 1) wtab_temp = elev(i) - depth(i)
+      wtab(i+(jf-1)*imax)= wtab_temp
     case('depth')
-      wtab(i+(jf-1)*imax)=elev(i)-zwat(wptr(wtctr))
+!      wtab(i+(jf-1)*imax)=elev(i)-zwat(wptr(wtctr))
+      wtab_temp = elev(i)-zwat(wptr(wtctr))  ! Revised 2 Feb 2022, RLB
+      if(wtab_temp < 0.) wtab_temp = 0.
+      if (jf == 1) wtab_temp = depth(i)
+      wtab(i+(jf-1)*imax)= wtab_temp
     case default
-      wtab(i+(jf-1)*imax)=zwat(wptr(wtctr)) ! Use lowest computed water table
+!      wtab(i+(jf-1)*imax)=zwat(wptr(wtctr)) ! Use lowest computed water table
+      wtab_temp = zwat(wptr(wtctr)) ! use lowest computed water table  ! Revised 2 Feb 2022, RLB
+      if(wtab_temp < 0.) wtab_temp = elev(i)
+      if (jf == 1) wtab_temp = elev(i) - depth(i)
+      wtab(i+(jf-1)*imax)= wtab_temp
   end select
 end if
 if(flag>-7 .or. flag<-9) return 

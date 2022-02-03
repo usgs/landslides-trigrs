@@ -11,7 +11,7 @@ if(flag==-1) then ! write simple list file with pressure head and factor of safe
   grid_loop_1: do i=1,imax
     rslo=slo(i)
     time_loop_1: do n=1,nout
-      write (u1,'(a5,i12,f6.1,i12,2x,g14.8)')&
+      write (u1,'(a5,i12,f6.1,i12,2x,g15.8)')&
         &'cell ',i,rslo/ddg2rad,n,tsav(n) 
       zns=float(nzs)
       z=zmin
@@ -26,7 +26,7 @@ else if (flag==-2) then ! write detailed list file, including initial, transient
   grid_loop_2: do i=1,imax
     rslo=slo(i)
     time_loop_2: do n=1,nout
-      write (u1,'(a5,i12,f6.1,i12,2x,g14.8)')&
+      write (u1,'(a5,i12,f6.1,i12,2x,g15.8)')&
         &'cell ',i,rslo/ddg2rad,n,tsav(n) 
       zns=float(nzs)
       z=zmin
@@ -54,7 +54,7 @@ else if(flag==-3) then ! Write list file with pressure head, factor of safety, a
     grid_loop_3a: do i=1,imax
       rslo=slo(i)
       time_loop_3a: do n=1,nout
-        write (u1,'(a5,i12,f6.1,i12,2x,g14.8)')&
+        write (u1,'(a5,i12,f6.1,i12,2x,g15.8)')&
           &'cell ',i,rslo/ddg2rad,n,tsav(n) 
         zns=float(nzs)
         z=zmin
@@ -69,7 +69,7 @@ else if(flag==-3) then ! Write list file with pressure head, factor of safety, a
     grid_loop_3b: do i=1,imax
       rslo=slo(i)
       time_loop_3b: do n=1,nout
-        write (u1,'(a5,i12,f6.1,i12,2x,g14.8)')&
+        write (u1,'(a5,i12,f6.1,i12,2x,g15.8)')&
           &'cell ',i,rslo/ddg2rad,n,tsav(n) 
         zns=float(nzs)
         z=zmin

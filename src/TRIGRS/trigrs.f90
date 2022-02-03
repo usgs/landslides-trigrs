@@ -14,7 +14,7 @@ integer:: ncol,nrow,u(ulen),maxzo,ncc,nccs
 integer:: time_incr_ctr ! added 26 June 2013, RLB 
 real::x1,mnzmx,mndep !,per_dur_min,per_dur
 real::outp_incr_min,outp_incr
-real (double)::newdep,dh ! added 17Mov2014, RLB
+real (double)::newdep,dh ! added 17 Nov 2014, RLB
 character (len=1):: tb
 character (len=255):: outfil,infil
 character (len=14):: fminfil='TRfs_min_'
@@ -40,7 +40,7 @@ u=(/11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,&
 pid=(/'TI','GM','TR'/)
 pi=3.141592653589793
 dg2rad=pi/180.D0
-vrsn='2.1.00a'; bldate='26 Aug 2016'
+vrsn='2.1.00c'; bldate='02 Feb 2022'
 smt=0.1d0; lard=12.d0 ! test values for early-time (moved 2/15/2012, smt corrected 3/5/2015, RLB)
 mnd=6 !default value assumed if no integer grid is read.
 fminfil=adjustl(fminfil);zfminfil=adjustl(zfminfil)
@@ -168,8 +168,10 @@ end if
   if (maxzo/=nzon) then
     write (*,*) 'Maximum zone number does not equal number of property zones!'
     write (*,*) 'Correct property-zone grid and/or initializtion file.' 
+    write (*,*) 'maxzo, nzon: ', maxzo, nzon ! debugging statemend added 03-10-2021, RLB
     write (u(19),*) 'Maximum zone number does not equal number of property zones!'
     write (u(19),*) 'Correct property-zone grid and/or initializtion file.' 
+    write (u(19),*) 'maxzo, nzon: ', maxzo, nzon ! debugging statemend added 03-10-2021, RLB
     close(u(19))
     write(*,*) 'Press RETURN to exit'
     read*

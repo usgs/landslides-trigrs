@@ -5,7 +5,7 @@ subroutine iverson(imx1,u1,profil,ulog)
 use grids; use input_vars
 use model_vars
 implicit none
-integer:: j,i,u1,ulog,imx1,n 
+integer:: j,i,u1,ulog,imx1,n,mils 
 real:: finf 
 real (double) :: derfc,a1,b1,ff,zns,zinc,z,znew
 real (double) :: zstar,tstar,x1,x2,x3,x4
@@ -22,6 +22,7 @@ dg2rad=pi/180.D0
 !  maximum value of Factor of Safety
 finf=10.
 !  loop steps through all grid cells
+mils=imax/1000
 write(*,*) 'Cells completed: '
 grid_loop: do i=1,imx1
   rslo=slo(i) 
@@ -29,7 +30,9 @@ grid_loop: do i=1,imx1
     fsmin(i)=finf+1.
     zfmin(i)=zmax(i)
     pmin(i)=0.
-    if (mod(i,2000)==0) write (*,fmt='(2x,i10,2x,a1)',advance="no") i,char(13) ! cells completed
+!    if (mod(i,2000)==0) write (*,fmt='(2x,i10,2x,a1)',advance="no") i,char(13) ! cells completed
+   if (mod(i,mils)==0) write (*,fmt='(2x,f5.1,a1)',advance="no")&
+       & 100*float(i)/float(imax),char(37) ! % completed
     cycle grid_loop
   end if
   rphi=phi(zo(i))
@@ -114,14 +117,14 @@ grid_loop: do i=1,imx1
     end do temporal_loop
       ptran(j)=z*rf
       if(z==0) ptran(j)=rf ! formula for ptran at z=0 not normalized, 9 Jan 2013, RLB 
-        p(j)=pzero(j)+ptran(j)
-        bline(j)=z*beta
-        ptest=p(j)-bline(j)
-        if(ptest > 0.0) then
+      p(j)=pzero(j)+ptran(j)
+      bline(j)=z*beta
+      ptest=p(j)-bline(j)
+      if(ptest > 0.0) then
           p(j)=bline(j)
-        end if
-        if (abs(a1)>1.e-5) then
-          if(lpge0 .and. p(j)<0.) then !option added 4/15/2010
+      end if
+      if (abs(a1)>1.e-5) then
+        if(lpge0 .and. p(j)<0.) then !option added 4/15/2010
           fw(j)=0.d0
         else if (z>0.) then ! Added z>0 condition 2/12/2013, RLB
           fw(j)=-(p(j)*uww*tan(rphi))/(uws(zo(i))*z*a1*b1)
@@ -189,7 +192,9 @@ grid_loop: do i=1,imx1
   else
     pmin(i)=pmn
   end if
-  if (mod(i,2000)==0) write (*,fmt='(2x,i10,2x,a1)',advance="no") i,char(13)
+!  if (mod(i,2000)==0) write (*,fmt='(2x,i10,2x,a1)',advance="no") i,char(13)
+   if (mod(i,mils)==0) write (*,fmt='(2x,f5.1,a1)',advance="no")&
+       & 100*float(i)/float(imax),char(37) ! % completed
 end do grid_loop
 write(*,*)
 write(*,*) imax, ' cells completed' 
