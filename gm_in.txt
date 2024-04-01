@@ -1,9 +1,0 @@
-number of grid files to test
-3
-name of input files (text string, up to 255 characters per line; one file per line, list elevation grid first)
-data/gridmatch/master.asc
-data/gridmatch/test1.asc
-data/gridmatch/test2.asc
-
-
-*** Note, Flow-direction grids need additional processing beyond the capabilities of GridMatch.
